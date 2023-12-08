@@ -1,4 +1,13 @@
+import os
+
 from contact import Contact
+
+
+def clean():
+    if os.name == "nt":
+        _ = os.system("cls")
+    else:
+        _ = os.system("clear")
 
 
 def get_str_response(message: str) -> str:
@@ -15,18 +24,17 @@ def get_int_response(message: str) -> int:
 
 def get_name_from_user(message: str) -> str:
     while True:
+        clean()
         output = input(message)
-        for char in output:
-            if not (char.isalpha() or char == " "):
-                print("The name must contain letters and spaces only")
-                break
-        else:
+        if name_is_valid(output):
             break
+        print("Name must contain spaces and letters only")
     return output
 
 
 def get_phone_number_from_user(message: str) -> str:
     while True:
+        clean()
         output = input(message)
         if phone_number_is_valid(output):
             break
@@ -67,5 +75,14 @@ def phone_number_is_valid(user_string: str) -> bool:
                 return False
     for char in code_list[-1]:
         if not char.isdigit():
+            return False
+    return True
+
+
+def name_is_valid(user_string: str) -> bool:
+    if user_string == "":
+        return False
+    for char in user_string:
+        if (not char.isalpha()) and (char != " "):
             return False
     return True

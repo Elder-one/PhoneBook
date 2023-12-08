@@ -7,25 +7,17 @@ class PhoneBook:
         self.path = path
         self.contacts: list = get_contacts_from_file(path)
 
-    def add_new_contact(self):
-        name: str = get_name_from_user("Input the name --> ")
-        phone_number: str = (
-            get_phone_number_from_user("Input"
-                                       " the phone number --> "))
-        info = get_str_response("Any additional info --> ")
+    def add_new_contact(self, name: str, phone_number: str, info: str):
         self.contacts.append(Contact(name, phone_number, info))
         self.contacts.sort()
 
     def remove_contact(self, contact: Contact):
         self.contacts.remove(contact)
 
-    def find_contacts(self, contact_sample: str, by_number: bool = True) -> list:
-        if by_number:
-            result = [el for el in self.contacts
-                      if contact_sample in el.phone_number]
-        else:
-            result = [el for el in self.contacts
-                      if contact_sample in el.name]
+    def find_contacts(self, contact_sample: str) -> list:
+        result = [el for el in self.contacts
+                  if contact_sample in el.phone_number
+                  or contact_sample in el.name]
         return result
 
     def edit_contact(self, contact: Contact, new_name: str,
@@ -36,12 +28,16 @@ class PhoneBook:
         return
 
     def show_contacts(self, contacts: list):
-        print("%18s %18s %9s".format("NAME",
-                                     "PHONE NUMBER",
-                                     "INFO"))
-        print("-"*(18+1+18+1+9))
-        for el in contacts:
-            print(el)
+        print("{:4} {:12} {:18} {:9}".format("ORD",
+                                         "NAME",
+                                         "PHONE NUMBER",
+                                         "INFO"))
+        print("-" * (12 + 1 + 18 + 1 + 9))
+        if len(contacts) == 0:
+            print("Empty set")
+        for id_, el in enumerate(contacts, start=1):
+            print("{:3d}. ".format(id_) + str(el))
+        print("-" * (12 + 1 + 18 + 1 + 9))
 
     def save_contacts(self):
         lines = ["$$".join([el.name, el.phone_number, el.other_info])
