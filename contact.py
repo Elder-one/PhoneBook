@@ -15,7 +15,7 @@ class Contact:
         return self.phone_number > other.phone_number
 
     def __repr__(self):
-        return "%18s %18s %s".format(self.name,
+        return "{:12} {:18} {:15}...".format(self.name,
                                      self.phone_number,
                                      self.other_info)
 
